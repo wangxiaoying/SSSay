@@ -1,0 +1,275 @@
+==== Global Rules ====
+
+DATE_FORMAT: yyyy-MM-dd hh:mm:ss
+
+
+
+==== User =====
+
+register
+-------------------------------------------
+Parameters:
+	- username
+	- password
+Return:
+	- result: existing user
+	- result: 
+		{
+			'token': str,
+			'name': str,
+		}
+
+login
+-------------------------------------------
+Paramters:
+	- username
+	- password
+Return:
+	- result: wrong username
+	- result: wrong password
+	- result: 
+		{
+			'token': str,
+			'name': str,
+		}
+
+getProfile
+-------------------------------------------
+Parameter:
+	- user_token
+	- user_id
+Return:
+	- fail: invalid token
+	- fail: non-existing user_id
+	- success: 
+		{ 
+			'name': str, 
+			'joing_date': str,		// DATE_FORMAT
+			'fans_num': num, 
+			'heor_num': num,
+			'voice_num': num,
+		}
+
+changePassword
+-------------------------------------------
+Parameter:
+	- user_token
+	- old_password
+	- new_password
+Return:
+	- result: invalid token
+	- result: success
+	- result: wrong password
+	- result: none existing user
+	- result: fail
+
+
+==== FollowRelation ====
+
+follow
+-------------------------------------------
+Parameters:
+	- user_fan_token
+	- user_hero_id
+Return:
+	- result: invalid token
+	- result: non-existing user_hero_id
+	- result: existing relation
+	- result: success
+	- result: fail
+
+unfollow
+-------------------------------------------
+Parameters:
+	- user_fan_token
+	- user_hero_id
+Return:
+	- fail: invalid token
+	- fail: non-exisiting user_hero_id
+	- fail: non-exisiting relation
+	- success: success
+
+getAllFans
+-------------------------------------------
+Parameters:
+	- user_token
+Return:
+	- fail: invalid token
+	- success: [
+					{
+						id: num
+						name: str
+						portrait: url
+					}... 
+			   ]
+
+getAllHeros
+-------------------------------------------
+Parameters:
+	- user_token
+Return:
+	- fail: invalid token
+	- success: [
+					{
+						id: num
+						name: str
+						portrait: url
+					}... 
+			   ]
+
+getFollowRelation
+-------------------------------------------
+Parameters:
+	- user_token
+	- user_id
+Return:
+	- result: fail
+	- result: invalid token
+	- result: non-exisiting user
+	- result: no-relation
+	- result: following
+	- result: followed
+	- result: friends
+	- result: same person
+
+
+==== DoingCategory ====
+
+getAllDoing
+-------------------------------------------
+Parameters:
+	- user_token
+Return:
+	- result: fail
+	- result: invalid token
+	- (success)
+	[
+		{category_name1: [id1;name1;people_count1, id2;name2;people_count2, ...]}
+		{category_name2: [id1;name1;pc1, id2;name2;pc2, ...]}
+		...
+	]
+
+getDoingInfo
+-------------------------------------------
+Parameters:
+	- user_token
+	- doing_id
+Return:
+	- fail: invalid token
+	- fail: non-existing doing_id
+	- success: 
+		{
+			'name': str
+			'people_num': num
+			'voice_num': num
+		}
+
+
+==== LifeLog ====
+
+startDoing
+-------------------------------------------
+Parameters:
+	- user_token
+	- doing_id
+Return:
+	- fail: invalid token
+	- fail: non-existing doing_id
+	- success: success
+
+stopDoing
+-------------------------------------------
+Parameters:
+	- user_token
+	- doing_id
+Return:
+	- result: success
+	- result: invalid token
+	- result: non-existing doing_id
+	- result: success
+
+getPastWeekRecords
+-------------------------------------------
+Paramters:
+	- user_token
+Return:
+	- fail: invalid token
+	- success:
+		[
+			{
+				'user_id': num
+				'doing_id': num
+				'start_date': str 			// DATE_FORMAT
+				'end_date': str 			// DATE_FORMAT
+			},
+			...
+		]
+
+getDoingHistory
+-------------------------------------------
+Paramters:
+	- user_token
+	- user_id
+Return:
+	- fail: invalid token
+	- fail: non-existing user
+	-success:
+		[
+			{
+				'doing_id': num             
+				'start_date': str        	// DATE_FORMAT
+				'end_date': str 			// DATE_FORMAT
+			},
+			...
+		]
+
+==== Voice ====
+
+uploadVoice
+-------------------------------------------
+Parameters:
+	- user_token
+	- lifelog_id
+	- voicefile
+Return:
+	- fail: invalid token
+	- fail: non-existing lifelog
+	- success
+
+randomLifeLogVoice
+-------------------------------------------
+Parameters:
+	- user_token
+	- doing_id
+Return:
+	- fail: invalid token
+	- fail: non-existing lifelog
+	- success
+		{
+			'username': str
+			'lifelog_id': num
+			'voice_url': str
+		}
+
+randomAllVoice
+-------------------------------------------
+Parameters:
+	- user_token
+Return:
+	- fail: invalid token
+	- success: 
+		{
+			'username': str
+			'doingname': str
+			'doing_id': num
+			'lifelog_id': num
+			'voice_url': str
+		}
+
+==== Doing ====
+
+getStart
+-------------------------------------------
+Parameters:
+	- user_token
+	- doing_id
